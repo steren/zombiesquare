@@ -26,6 +26,9 @@ public class Player extends Model {
     /** Does this player contaminate other players? */
     public boolean contaminant;
     
+    @Filter("player")
+    public Query<CheckIn> checkins;
+    
     public Player(String id, String email) {
     	this.id = id;
         this.email = email;

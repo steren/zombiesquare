@@ -16,11 +16,16 @@ public class Venue extends Model {
     
     public String name;
     
+    /** if null, not currently contaminated */
     public Date endContaminationDate;
     
     public Venue(String id, String name) {
     	this.id = id;
         this.name = name;
+    }
+    
+    public boolean isContaminated() {
+    	return endContaminationDate != null && endContaminationDate.after(new Date());
     }
     
     static Query<Venue> all() {
@@ -30,7 +35,6 @@ public class Venue extends Model {
     public static Collection<Venue> findAll() {
         return all().fetch();
     }
- 
     
     public static Venue findById(String id) {
         return all().filter("id", id).get();

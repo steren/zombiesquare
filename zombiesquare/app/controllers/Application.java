@@ -101,15 +101,17 @@ public class Application extends Controller {
     	new CheckIn(result.getCheckin().getId(), player, venue, new Date(result.getCheckin().getCreatedAt() * 1000)).insert();
     	
     	// contaminate
-		if (!player.contaminated && venue.contaminated) {
-			player.contaminated = true;
-			player.save();
-    		
+		if (venue.contaminated) {
+			if(!player.contaminated) {
+				player.contaminated = true;
+				player.save();
+			}
     		// send mail
     	} else {
-    		venue.contaminated = true;
-    		venue.save();
-    		
+    		if(player.contaminated) {
+    			venue.contaminated = true;
+    			venue.save();
+    		}
     		// send mail
     	} 
     	

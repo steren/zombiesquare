@@ -1,10 +1,12 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import json.model.foursquareAPI.FourSquareCheckIn;
 import json.model.foursquareAPI.FourSquareCheckInApiResult;
 import json.model.foursquareAPI.FourSquareUser;
+import models.CheckIn;
 import models.Player;
 import models.Venue;
 import parameters.Parameters;
@@ -86,7 +88,29 @@ public class Application extends Controller {
     		error("not a registered player");
     	}
     	
-    	player.checkIn(result.getCheckin());
+    	// get the venue
+    	Venue venue = Venue.findById(result.getCheckin().getVenue().getId());
+    	// create a venue if doesn't exist
+    	if(venue == null) {
+    		venue = new Venue(result.getCheckin().getVenue());
+    		venue.insert();
+    	}
+    	
+    	// store the checkin
+    	new CheckIn(result.getCheckin().getId(), player, venue, new Date(result.getCheckin().getCreatedAt() * 1000)).insert();
+    	
+    	// contaminate
+		if (!player.contaminated && venue.contaminated) {
+			player.contaminated = true;
+			player.save();
+    		
+    		// send mail
+    	} else {
+    		venue.contaminated = true;
+    		venue.save();
+    		
+    		// send mail
+    	} 
     	
     	return;
     }

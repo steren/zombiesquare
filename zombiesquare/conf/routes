@@ -2,6 +2,9 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# Unsecured admin
+*    /admin    module:crudsiena
+
 # Home page
 GET     /                                       Application.index
 

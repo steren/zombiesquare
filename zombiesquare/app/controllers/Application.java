@@ -78,13 +78,12 @@ public class Application extends Controller {
      * Called by foursquare when a player checks in somewhere
      */
     public static void playerCheckIn( String body ) {
-
     	FourSquareCheckInApiResult result = new Gson().fromJson(body, FourSquareCheckInApiResult.class);
     	
     	Player player = Player.findById(result.getCheckin().getUser().getId());
-    	// should not happen
+    	// should not happen because player signed up
     	if(player == null) {
-    		return;
+    		error("not a registered player");
     	}
     	
     	player.checkIn(result.getCheckin());

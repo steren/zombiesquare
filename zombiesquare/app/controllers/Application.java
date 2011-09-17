@@ -8,6 +8,7 @@ import json.model.foursquareAPI.FourSquareCheckInApiResult;
 import json.model.foursquareAPI.FourSquareUser;
 import models.CheckIn;
 import models.Player;
+import models.Venue;
 import models.VenueState;
 import parameters.Parameters;
 import play.mvc.Controller;

@@ -10,7 +10,7 @@ import java.util.*;
 
 import models.Player;
 
-import json.model.AccessToken;
+import json.model.foursquareAPI.FourSquareAccessToken;
 import json.model.foursquareAPI.FourSquareUser;
 
 import com.google.gson.Gson;
@@ -23,14 +23,30 @@ public class Application extends Controller {
     }
     
     public static void authenticate(String code) {
-    	Gson gson = new Gson();
-    	AccessToken access_token = gson.fromJson(
-    			HTTPRequestPoster.sendGetRequest(Parameters.accessTokenRequestUrl(), Parameters.accessTokenRequestUrlParameters(code))
-    			,AccessToken.class);
-    	renderArgs.put("token", access_token.getToken());
     	
-    	FourSquareUser user = AuthenticationRequest.getFourSquareUserByToken(access_token.getToken());
-    	renderArgs.put("firstName", user.getFirstName());
+    	//access token request
+    	String accessToken = AuthenticationRequest.getUserTokenByCode(code);
+    	
+    	//user request by token
+    	FourSquareUser user = AuthenticationRequest.getFourSquareUserByToken(accessToken);
+    	
+    	//Find if user with this id
+    	Player player = Player.findById(user.getId());
+    
+    	//create or update the player
+    	if(player==null) {
+    		player = new Player(user, accessToken);
+    		player.insert();
+    	}
+    	else {
+    		if(player.accessToken!=accessToken) {
+    			player.accessToken = accessToken;
+    			player.save();
+    		}
+    	}
+    	
+    	renderArgs.put("firstName", player.firstName);
+    	
     	render();
     }
 }

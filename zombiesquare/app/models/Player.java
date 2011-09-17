@@ -2,6 +2,8 @@ package models;
 
 import java.util.Collection;
 
+import json.model.foursquareAPI.FourSquareUser;
+
 import play.*;
 import play.data.validation.Email;
 import play.data.validation.Required;
@@ -27,8 +29,19 @@ public class Player extends Model {
     public boolean contaminant;
     
     public Player(String id, String email) {
+    	//TODO virer ce constructeur (juste pour tests)
     	this.id = id;
         this.email = email;
+    }
+    
+    public Player(FourSquareUser fourSquareUser, String accessToken) {
+    	this.id = fourSquareUser.getId();
+    	this.email = fourSquareUser.getContact().getEmail();
+    	this.firstName = fourSquareUser.getFirstName();
+    	this.lastName = fourSquareUser.getLastName();
+    	this.accessToken = accessToken;
+    	this.contaminant = false;
+    	this.contaminated = false;
     }
     
     static Query<Player> all() {

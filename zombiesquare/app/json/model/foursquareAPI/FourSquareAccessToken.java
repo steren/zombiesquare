@@ -1,6 +1,6 @@
-package json.model;
+package json.model.foursquareAPI;
 
-public class AccessToken {
+public class FourSquareAccessToken {
 	private String access_token;
 	
 	public String getToken() {

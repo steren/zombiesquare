@@ -16,11 +16,11 @@ public class Admin extends Controller {
         render(players);
     }
 
-    public static void createPlayer(@Required @Email String email) {
+    public static void createPlayer(String id, @Required @Email String email) {
         if(validation.hasErrors()) {
         	return;
         }
-        new Player(email).insert();
+        new Player(id, email).insert();
         players();
     }
     

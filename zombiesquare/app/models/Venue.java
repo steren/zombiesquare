@@ -10,14 +10,16 @@ import siena.*;
 
 public class Venue extends Model {
 
-    @Id
-    public Long id;
+	/** id, strictly the same than the foursquare id */
+	@Id(Generator.NONE)
+    public String id;
     
     public String name;
     
     public Date endContaminationDate;
     
-    public Venue(String name) {
+    public Venue(String id, String name) {
+    	this.id = id;
         this.name = name;
     }
     
@@ -30,7 +32,7 @@ public class Venue extends Model {
     }
  
     
-    public static Venue findById(Long id) {
+    public static Venue findById(String id) {
         return all().filter("id", id).get();
     }
     

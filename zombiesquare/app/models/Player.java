@@ -9,8 +9,9 @@ import siena.*;
 
 public class Player extends Model {
 
-    @Id
-    public Long id;
+	/** id, strictly the same than the foursquare id */
+	@Id(Generator.NONE)
+    public String id;
     
     @Required @Email
     public String email;
@@ -25,7 +26,8 @@ public class Player extends Model {
     /** Does this player contaminate other players? */
     public boolean contaminant;
     
-    public Player(String email) {
+    public Player(String id, String email) {
+    	this.id = id;
         this.email = email;
     }
     
@@ -38,7 +40,7 @@ public class Player extends Model {
     }
  
     
-    public static Player findById(Long id) {
+    public static Player findById(String id) {
         return all().filter("id", id).get();
     }
     

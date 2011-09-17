@@ -1,4 +1,4 @@
-package requests;
+package requests.foursquare;
 
 import java.util.ArrayList;
 

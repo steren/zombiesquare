@@ -1,16 +1,17 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import json.model.foursquareAPI.FourSquareCheckIn;
 import json.model.foursquareAPI.FourSquareCheckInApiResult;
 import json.model.foursquareAPI.FourSquareUser;
 import models.Player;
-import models.Venue;
+import models.VenueState;
 import parameters.Parameters;
 import play.mvc.Controller;
-import requests.AuthenticationRequest;
-import requests.CheckInRequest;
+import requests.foursquare.AuthenticationRequest;
+import requests.foursquare.CheckInRequest;
 
 import com.google.gson.Gson;
 
@@ -55,8 +56,8 @@ public class Application extends Controller {
     			
     			renderArgs.put("venueId", venueId);
     			
-    			long createAt = checkin.getCreatedAt();
-    			if(Venue.isContaminating(createAt, venueId)) {
+    			Date date = new Date(checkin.getCreatedAt()*1000);
+    			if(VenueState.venueIsContaminated(venueId, date)) {
     				contaminated = true;
     				break;
     			}

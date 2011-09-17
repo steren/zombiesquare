@@ -4,3 +4,4 @@ require:
     - play
     - play -> gae 1.4
     - play -> siena 2.0.5
+    - play -> crudsiena 2.0.2

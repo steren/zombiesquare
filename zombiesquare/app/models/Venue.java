@@ -3,6 +3,9 @@ package models;
 import java.util.Collection;
 import java.util.Date;
 
+import json.model.foursquareAPI.FourSquareCheckIn;
+import json.model.foursquareAPI.FourSquareVenue;
+
 import play.*;
 import play.data.validation.Email;
 import play.data.validation.Required;
@@ -19,9 +22,9 @@ public class Venue extends Model {
     /** if null, not currently contaminated */
     public Date endContaminationDate;
     
-    public Venue(String id, String name) {
-    	this.id = id;
-        this.name = name;
+    public Venue(FourSquareVenue fsqVenue) {
+    	this.id = fsqVenue.getId();
+    	this.name = fsqVenue.getName();
     }
     
     public boolean isContaminated() {

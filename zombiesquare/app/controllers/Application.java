@@ -111,6 +111,8 @@ public class Application extends Controller {
     		if(player.contaminated) {
     			venue.contaminated = true;
     			venue.save();
+    			
+    			new VenueState(venue, new Date(), true).insert();
     		}
     		// send mail
     	} 

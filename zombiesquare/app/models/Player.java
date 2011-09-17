@@ -1,6 +1,9 @@
 package models;
 
 import java.util.Collection;
+import java.util.Date;
+
+import org.joda.time.DateTime;
 
 import json.model.foursquareAPI.FourSquareCheckIn;
 import json.model.foursquareAPI.FourSquareUser;
@@ -26,8 +29,9 @@ public class Player extends Model {
     
     /** Has this player been contaminated? */
     public boolean contaminated;
-    /** Does this player contaminate other players? */
-    public boolean contaminant;
+    
+    /** number of weapons the player has */
+    public Long weapons;
     
     @Filter("player")
     public Query<CheckIn> checkins;
@@ -44,7 +48,6 @@ public class Player extends Model {
     	this.firstName = fourSquareUser.getFirstName();
     	this.lastName = fourSquareUser.getLastName();
     	this.accessToken = accessToken;
-    	this.contaminant = false;
     	this.contaminated = false;
     }
     
@@ -67,8 +70,8 @@ public class Player extends Model {
     
     /**
      * Handle everything :
-     * See if user is now contaminated
-     * See if user contaminates the venue 
+     * See if player is now contaminated
+     * See if player contaminates the venue 
      * Store the CheckIn
      */
     public void checkIn(FourSquareCheckIn checkin) {
@@ -81,10 +84,19 @@ public class Player extends Model {
     	}
     	
     	// store the checkin
+    	new CheckIn(this, venue, new Date(checkin.getCreatedAt())).insert();
     	
-    	// see if user is now contaminated
+    	// see if player contaminates the venue 
+    	if( this.contaminated ) {
+    		venue.contaminated = true;
+    		venue.save();
+    		// store who contaminated the venue ?
+    	} else if (venue.contaminated) { // see if player is now contaminated
+    		// create a contamination object
+    		
+    		// set the player as contaminate
+    	}
     	
-    	// see if user contaminates the venue 
     }
     
 }

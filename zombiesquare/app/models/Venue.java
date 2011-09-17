@@ -3,6 +3,8 @@ package models;
 import java.util.Collection;
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
 import json.model.foursquareAPI.FourSquareCheckIn;
 import json.model.foursquareAPI.FourSquareVenue;
 
@@ -12,23 +14,18 @@ import play.data.validation.Required;
 import siena.*;
 
 public class Venue extends Model {
-
+	
 	/** id, strictly the same than the foursquare id */
 	@Id(Generator.NONE)
     public String id;
     
     public String name;
     
-    /** if null, not currently contaminated */
-    public Date endContaminationDate;
+    public boolean contaminated;
     
     public Venue(FourSquareVenue fsqVenue) {
     	this.id = fsqVenue.getId();
     	this.name = fsqVenue.getName();
-    }
-    
-    public boolean isContaminated() {
-    	return endContaminationDate != null && endContaminationDate.after(new Date());
     }
     
     static Query<Venue> all() {
@@ -46,6 +43,6 @@ public class Venue extends Model {
     public String toString() {
         return name;
     }
-    
+
 }
 

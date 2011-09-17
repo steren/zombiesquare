@@ -3,6 +3,8 @@ package models;
 import java.util.Collection;
 import java.util.Date;
 
+import json.model.foursquareAPI.FourSquareCheckIn;
+
 import play.*;
 import play.data.validation.Email;
 import play.data.validation.Required;
@@ -24,12 +26,13 @@ public class CheckIn extends Model {
     public Date createdAt;
     
     
-    public CheckIn(Player player, Venue venue) {
+    public CheckIn(Player player, Venue venue, Date createdAt) {
     	this.player = player;
     	this.venue = venue;
+    	this.createdAt = createdAt;
     }
     
-    static Query<CheckIn> all() {
+	static Query<CheckIn> all() {
         return Model.all(CheckIn.class);
     }
     

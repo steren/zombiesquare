@@ -8,8 +8,13 @@ import play.data.validation.Email;
 import play.data.validation.Required;
 import siena.*;
 
+/**
+ * Keep track of the contaminated state of a player
+ */
 public class Contamination extends Model {
 
+	public static final int CONTAMINATION_HOURS = 24; // 1 day
+	
     @Id
     public Long id;
     
@@ -19,6 +24,7 @@ public class Contamination extends Model {
     
     @Index("venue_index")
     @Required
+    /** venue that contaminated the user */
     public Venue venue;
 
     public Date startDate;

@@ -84,20 +84,16 @@ public class Player extends Model {
     	}
     	
     	// store the checkin
-    	new CheckIn(this, venue, new Date(checkin.getCreatedAt())).insert();
+    	new CheckIn(this, venue, new Date(checkin.getCreatedAt() * 1000)).insert();
     	
-    	// see if player contaminates the venue 
-    	if( this.contaminated ) {
+    	// contaminate
+		if (venue.contaminated) {
+    		this.contaminated = true;
+    		this.save();
+    	} else if( this.contaminated ) {
     		venue.contaminated = true;
     		venue.save();
-    		// store who contaminated the venue ?
-    	} else if (venue.contaminated) { // see if player is now contaminated
-    		// create a contamination object
-    		
-    		// set the player as contaminate
-    	}
-    	
+    	} 
     }
-    
 }
 

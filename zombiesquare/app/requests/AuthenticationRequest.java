@@ -13,10 +13,10 @@ public class AuthenticationRequest {
 	public static FourSquareUser getFourSquareUserByToken(String token) {
 		FourSquareUserApiResult result = new Gson().fromJson(
 			HTTPRequestPoster.sendGetRequest(
-					FourSquareApiUrl.fourSquareApiUrl+FourSquareApiUrl.users+FourSquareApiUrl.self
+					FourSquareApiUrl.fourSquareApiUrl+FourSquareApiUrl.users+"/"+FourSquareApiUrl.self
 					, FourSquareApiUrl.tokenParameter(token)) 
 			, FourSquareUserApiResult.class);
-		if(result!=null & result.getResponse()!=null)
+		if(result!=null && result.getResponse()!=null)
 			return result.getResponse().getUser();
 		else
 			return null;

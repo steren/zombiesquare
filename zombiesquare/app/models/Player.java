@@ -28,6 +28,9 @@ public class Player extends Model {
     /** Does this player contaminate other players? */
     public boolean contaminant;
     
+    @Filter("player")
+    public Query<CheckIn> checkins;
+    
     public Player(String id, String email) {
     	//TODO virer ce constructeur (juste pour tests)
     	this.id = id;

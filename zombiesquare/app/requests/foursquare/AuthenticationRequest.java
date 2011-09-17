@@ -1,4 +1,4 @@
-package requests;
+package requests.foursquare;
 
 import json.model.foursquareAPI.FourSquareAccessToken;
 import json.model.foursquareAPI.FourSquareUser;

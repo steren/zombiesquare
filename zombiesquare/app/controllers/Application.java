@@ -13,9 +13,11 @@ import models.Venue;
 
 import json.model.foursquareAPI.FourSquareAccessToken;
 import json.model.foursquareAPI.FourSquareCheckIn;
+import json.model.foursquareAPI.FourSquareCheckInApiResult;
 import json.model.foursquareAPI.FourSquareUser;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 public class Application extends Controller {
 
@@ -55,19 +57,17 @@ public class Application extends Controller {
     /**
      * Called by foursquare when a player checks in somewhere
      */
-    public static void playerCheckIn( FourSquareCheckIn checkIn ) {
-    	Player player = Player.findById(checkIn.getUser().getId());
+    public static void playerCheckIn( String body ) {
+
+    	FourSquareCheckInApiResult result = new Gson().fromJson(body, FourSquareCheckInApiResult.class);
+    	
+    	Player player = Player.findById(result.getCheckin().getUser().getId());
     	// should not happen
     	if(player == null) {
     		return;
     	}
     	
-    	Venue venue = Venue.findById(checkIn.getVenue().getId());
-    	// create a venue if doesn't exist
-    	if(venue == null) {
-    		venue = new Venue(checkIn.getVenue());
-    		venue.insert();
-    	}
+    	player.checkIn(result.getCheckin());
     	
     	return;
     }

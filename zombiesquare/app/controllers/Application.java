@@ -1,12 +1,17 @@
 package controllers;
 
+import parameters.Parameters;
 import play.*;
 import play.data.validation.Required;
 import play.mvc.*;
+import requests.AuthenticationRequest;
 import requests.HTTPRequestPoster;
 import java.util.*;
 
+import models.Player;
+
 import json.model.AccessToken;
+import json.model.foursquareAPI.FourSquareUser;
 
 import com.google.gson.Gson;
 
@@ -22,8 +27,10 @@ public class Application extends Controller {
     	AccessToken access_token = gson.fromJson(
     			HTTPRequestPoster.sendGetRequest(Parameters.accessTokenRequestUrl(), Parameters.accessTokenRequestUrlParameters(code))
     			,AccessToken.class);
-    	renderArgs.put("response", access_token.getToken());
-    	//TODO - authentication request
+    	renderArgs.put("token", access_token.getToken());
+    	
+    	FourSquareUser user = AuthenticationRequest.getFourSquareUserByToken(access_token.getToken());
+    	renderArgs.put("firstName", user.getFirstName());
     	render();
     }
 

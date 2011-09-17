@@ -84,7 +84,7 @@ public class Player extends Model {
     	}
     	
     	// store the checkin
-    	new CheckIn(this, venue, new Date(checkin.getCreatedAt() * 1000)).insert();
+    	new CheckIn(checkin.getId(), this, venue, new Date(checkin.getCreatedAt() * 1000)).insert();
     	
     	// contaminate
 		if (venue.contaminated) {

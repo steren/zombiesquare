@@ -12,8 +12,8 @@ import siena.*;
 
 public class CheckIn extends Model {
 
-    @Id
-    public Long id;
+	@Id(Generator.NONE)
+    public String id;
     
     @Index("player_index")
     @Required
@@ -26,7 +26,8 @@ public class CheckIn extends Model {
     public Date createdAt;
     
     
-    public CheckIn(Player player, Venue venue, Date createdAt) {
+    public CheckIn(String id, Player player, Venue venue, Date createdAt) {
+    	this.id = id;
     	this.player = player;
     	this.venue = venue;
     	this.createdAt = createdAt;

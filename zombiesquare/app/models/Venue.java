@@ -47,5 +47,24 @@ public class Venue extends Model {
         return name;
     }
     
+    public static boolean isContaminating(Long longDate, String id) {
+    	Venue venue = findById(id);
+    	Date date = new Date(longDate*1000);
+    	if(venue==null)
+    		return false;
+    	else {
+    		Collection<Contamination> contaminations = 
+    		 Contamination.all()
+    			.filter("venue", venue)
+    			.filter("endDate >", date)
+    			.order("endDate")
+    			.fetch(1);
+    		if(contaminations.size()>0) {
+    			return contaminations.iterator().next().startDate.before(date);
+    		}
+    		return false;
+    	}
+    }
+    
 }
 

@@ -1,21 +1,15 @@
 package controllers;
 
-import parameters.Parameters;
-import play.*;
-import play.data.validation.Required;
-import play.mvc.*;
-import requests.AuthenticationRequest;
-import requests.HTTPRequestPoster;
-import java.util.*;
+import java.util.ArrayList;
 
-import models.Player;
-import models.Venue;
-
-import json.model.foursquareAPI.FourSquareAccessToken;
 import json.model.foursquareAPI.FourSquareCheckIn;
 import json.model.foursquareAPI.FourSquareUser;
-
-import com.google.gson.Gson;
+import models.Player;
+import models.Venue;
+import parameters.Parameters;
+import play.mvc.Controller;
+import requests.AuthenticationRequest;
+import requests.CheckInRequest;
 
 public class Application extends Controller {
 
@@ -47,7 +41,32 @@ public class Application extends Controller {
     		}
     	}
     	
+    	//Check if already contaminated ?
+    	boolean contaminated = false;
+    	//get last check ins
+    	ArrayList<FourSquareCheckIn> lastCheckIns = CheckInRequest.getLastCheckIns(accessToken);
+    	if(lastCheckIns!=null && !lastCheckIns.isEmpty()) {
+    		//for each check in, check venue contamination
+    		for(FourSquareCheckIn checkin: lastCheckIns) {
+    			String venueId = checkin.getVenue().getId();
+    			
+    			renderArgs.put("venueId", venueId);
+    			
+    			long createAt = checkin.getCreatedAt();
+    			if(Venue.isContaminating(createAt, venueId)) {
+    				contaminated = true;
+    				break;
+    			}
+    		}
+    	}
+    	
+    	
+    	
+    	String contaminatedDisplay = contaminated?"Vous êtes contaminé ! :(":"Vous n'êtes pas contaminé ! :)";
+    	
     	renderArgs.put("firstName", player.firstName);
+    	
+    	renderArgs.put("contamination", contaminatedDisplay);
     	
     	render();
     }

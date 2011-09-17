@@ -1,6 +1,7 @@
 package controllers;
 
 import play.*;
+import play.data.validation.Email;
 import play.data.validation.Required;
 import play.mvc.*;
 
@@ -15,7 +16,7 @@ public class Admin extends Controller {
         render(players);
     }
 
-    public static void createPlayer(@Required String email) {
+    public static void createPlayer(@Required @Email String email) {
         if(validation.hasErrors()) {
         	return;
         }

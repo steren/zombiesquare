@@ -4,3 +4,5 @@ tmp
 .settings
 eclipse
 modules
+lib
+war

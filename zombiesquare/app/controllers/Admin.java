@@ -8,18 +8,14 @@ import java.util.*;
 
 import models.*;
 
-public class Application extends Controller {
-
-    public static void index() {
-        render();
-    }
+public class Admin extends Controller {
 
     public static void players() {
         Collection<Player> players = Player.findAll();
         render(players);
     }
 
-    public static void test(@Required String email) {
+    public static void createPlayer(@Required String email) {
         if(validation.hasErrors()) {
         	return;
         }

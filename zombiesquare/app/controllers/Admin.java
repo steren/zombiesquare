@@ -1,6 +1,7 @@
 package controllers;
 
 import play.*;
+import play.data.validation.Email;
 import play.data.validation.Required;
 import play.mvc.*;
 
@@ -15,11 +16,11 @@ public class Admin extends Controller {
         render(players);
     }
 
-    public static void createPlayer(@Required String email) {
+    public static void createPlayer(String id, @Required @Email String email) {
         if(validation.hasErrors()) {
         	return;
         }
-        new Player(email).insert();
+        new Player(id, email).insert();
         players();
     }
     

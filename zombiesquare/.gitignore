@@ -6,3 +6,4 @@ eclipse
 modules
 lib
 war
+*.log

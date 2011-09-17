@@ -10,6 +10,7 @@ import models.CheckIn;
 import models.Player;
 import models.Venue;
 import models.VenueState;
+import parameters.GameParameters;
 import parameters.Parameters;
 import play.mvc.Controller;
 import requests.foursquare.AuthenticationRequest;
@@ -100,11 +101,27 @@ public class Application extends Controller {
     	// store the checkin
     	new CheckIn(result.getCheckin().getId(), player, venue, new Date(result.getCheckin().getCreatedAt() * 1000)).insert();
     	
+    	//update user last venue
+    	player.lastVenue = venue;
+    	player.save();
+    	
     	// contaminate
 		if (venue.contaminated) {
 			if(!player.contaminated) {
-				player.contaminated = true;
-				player.save();
+				if(player.weapons>=GameParameters.costKeepLive) {
+					player.weapons = player.weapons - GameParameters.costKeepLive;
+					player.save();
+					venue.contaminated = false;
+					venue.save();
+					for(Player zombie: Player.zombiesInside(venue)) {
+						zombie.contaminated = false;
+						zombie.save();
+					}
+				}
+				else {
+					player.contaminated = true;
+					player.save();
+				}
 			}
     		// send mail
     	} else {
@@ -113,7 +130,15 @@ public class Application extends Controller {
     			venue.save();
     		}
     		// send mail
-    	} 
+    		else {
+    			//if not limited by max count weapons && random is nice with you, weapons++
+    			if(player.weapons<GameParameters.maxCountWeapons 
+    					&& Math.random()>GameParameters.getWeaponProbability) {
+    				player.weapons++;
+    				player.save();
+    			}
+    		}
+    	}
     	
     	return;
     }

@@ -1,0 +1,3 @@
+Yeah! you killed all zombies at ${venue.name}.
+
+You now have ${player.weapons} weapons left.

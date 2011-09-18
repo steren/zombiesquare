@@ -28,7 +28,7 @@ public class Application extends Controller {
         render();
     }
     
-    public static void testMail() throws Exception {
+    public static void testMailFree() throws Exception {
     	ArrayList<PostField> dataFields = new ArrayList<PostField>();
     	dataFields.add(new PostField("code", "hackathon"));
     	dataFields.add(new PostField("email", "duchere@gmail.com"));
@@ -85,9 +85,6 @@ public class Application extends Controller {
     		contaminatedDisplay = "You're not still contaminated but beware when you check-in somewhere from now...";
     	}
     	
-    	// For testing
-    	Mails.testMail(player);
-    	
     	renderArgs.put("firstName", player.firstName);
     	
     	renderArgs.put("contamination", contaminatedDisplay);
@@ -98,7 +95,8 @@ public class Application extends Controller {
     /**
      * Called by foursquare when a player checks in somewhere
      */
-    public static void playerCheckIn( String checkin ) {
+    public static void playerCheckIn( String checkin /*body*/ ) {
+    	//String checkin = body;
     	FourSquareCheckIn result = new Gson().fromJson(checkin, FourSquareCheckIn.class);
     	
     	Player player = Player.findById(result.getUser().getId());
@@ -122,9 +120,6 @@ public class Application extends Controller {
     	player.lastVenue = venue;
     	player.save();
     	
-    	// For testing
-    	Mails.testMail(player);
-    	
     	// contaminate
 		if (venue.contaminated) {
 			if(!player.contaminated) {
@@ -137,6 +132,8 @@ public class Application extends Controller {
 						zombie.contaminated = false;
 						zombie.save();
 					}
+					
+    				Mails.playerUseWeapon(player, venue);
 				}
 				else {
 					player.contaminated = true;
@@ -162,10 +159,38 @@ public class Application extends Controller {
     					&& Math.random()>GameParameters.getWeaponProbability) {
     				player.weapons++;
     				player.save();
+    				
+    				Mails.playerGetWeapon(player, venue);
     			}
     		}
     	}
     	
     	return;
+    }
+    
+    public static void testMail() {
+    	// For testing
+    	Mails.testMail();
+    	
+//    	Logger.info("sending HtmlEmail");
+    	
+//    	HtmlEmail email = new HtmlEmail();
+//    	try {
+//			email.addTo("steren.giannini@gmail.com");
+//	    	email.setFrom("steren.giannini@gmail.com", "Square of the Dead");
+//	    	email.setSubject("Testing HTML emails");
+//	    	// set the html message
+//	    	email.setHtmlMsg("<html><p>This is HTML</p></html>");
+//	    	// set the alternative message
+//	    	email.setTextMsg("This is text");
+//	    	
+//	    	Mail.send(email);
+//		} catch (EmailException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
+    	
+    	index();
     }
 }

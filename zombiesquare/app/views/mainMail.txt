@@ -1,4 +1,4 @@
-Square of the Dead 
-
+Square of the Dead
+==================
 #{doLayout /}
 

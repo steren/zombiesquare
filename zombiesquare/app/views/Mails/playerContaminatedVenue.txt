@@ -1,3 +1,5 @@
+#{extends 'mainMail.txt' /}
+
 You just contaminated ${venue.name}.
 
 You helped to spread the virus, you gained 1 point.

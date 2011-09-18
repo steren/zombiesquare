@@ -1,3 +1,6 @@
+#{extends 'mainMail.txt' /}
+
 Yeah! you killed all zombies at ${venue.name}.
 
 You now have ${player.weapons} weapons left.
+You win 10 points and your score is now XXX points.

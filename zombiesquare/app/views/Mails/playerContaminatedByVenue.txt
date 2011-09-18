@@ -1,3 +1,5 @@
+#{extends 'mainMail.txt' /}
+
 Damned!
 ${venue.name} was contaminated and you didn't have any weapon to resist.
 

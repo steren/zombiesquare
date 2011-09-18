@@ -10,7 +10,6 @@ img#rules {
   width:100%;
 }
 .container {
-	
   text-align: right;
   z-index: 3;
   display: block;
@@ -19,7 +18,9 @@ img#rules {
   margin-right:auto;
   margin-left: auto;
 }
-
+.bottom {
+    margin-top: 20px;	
+}
 #containerTitle {
 	height: 120px;
 }
@@ -49,3 +50,5 @@ img#rules {
 	float: left;	
 	color: white;
 }
+
+a {color:white;}

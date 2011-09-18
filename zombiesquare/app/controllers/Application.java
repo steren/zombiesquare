@@ -87,7 +87,8 @@ public class Application extends Controller {
     /**
      * Called by foursquare when a player checks in somewhere
      */
-    public static void playerCheckIn( String checkin ) {
+    public static void playerCheckIn( String /*checkin*/ body ) {
+    	String checkin = body;
     	FourSquareCheckIn result = new Gson().fromJson(checkin, FourSquareCheckIn.class);
     	
     	Player player = Player.findById(result.getUser().getId());

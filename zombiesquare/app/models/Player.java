@@ -41,6 +41,9 @@ public class Player extends Model {
     public Query<CheckIn> checkins;
     
     public Venue lastVenue;
+
+    // mechanism to unsubscribe.
+    public boolean unsubscribeAll;
     
     public Player(String id, String email) {
     	//TODO virer ce constructeur (juste pour tests)

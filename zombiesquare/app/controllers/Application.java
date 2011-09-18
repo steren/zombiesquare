@@ -55,10 +55,11 @@ public class Application extends Controller {
     		player.insert();
     	}
     	else {
+    		player.unsubscribeAll = false;
     		if(player.accessToken!=accessToken) {
     			player.accessToken = accessToken;
-    			player.save();
     		}
+    		player.save();
     	}
     	
     	//Check if already contaminated ?
@@ -88,6 +89,14 @@ public class Application extends Controller {
     	renderArgs.put("contamination", contaminatedDisplay);
     	
     	render(player);
+    }
+
+    public static void unsubscribe (String id) {
+    	Player player = Player.findById(id);
+    	player.unsubscribeAll = true;
+    	player.save();
+    	
+    	index();
     }
     
     /**
@@ -140,14 +149,17 @@ public class Application extends Controller {
 					player.save();
 					venue.save();
 					
-    				Mails.playerUseWeapon(player, venue, addScore, zombiesDecontaminated);
+					if(!player.unsubscribeAll) {
+						Mails.playerUseWeapon(player, venue, addScore, zombiesDecontaminated);
+					}
 				}
 				else {
 					player.contaminated = true;
 					player.save();
 					
-					// mail
-					Mails.playerContaminatedByVenue(player, venue);
+					if(!player.unsubscribeAll) {
+						Mails.playerContaminatedByVenue(player, venue);
+					}
 				}
 			}
     	} else {
@@ -158,8 +170,9 @@ public class Application extends Controller {
     			player.score += GameParameters.SCORE_CONTAMINATE_VENUE;
     			player.save();
 
-    			// mail
-    			Mails.playerContaminatedVenue(player, venue);
+				if(!player.unsubscribeAll) {
+					Mails.playerContaminatedVenue(player, venue);
+				}
     			
     			new VenueState(venue, new Date(), true).insert();
     		}
@@ -170,7 +183,9 @@ public class Application extends Controller {
     				player.weapons++;
     				player.save();
     				
-    				Mails.playerGetWeapon(player, venue);
+					if(!player.unsubscribeAll) {
+						Mails.playerGetWeapon(player, venue);
+					}
     			}
     		}
     	}

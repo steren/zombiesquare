@@ -59,6 +59,7 @@ public class Player extends Model {
     	this.accessToken = accessToken;
     	this.contaminated = false;
     	this.weapons = new Long(0);
+    	this.score = new Long(0);
     }
     
     static Query<Player> all() {

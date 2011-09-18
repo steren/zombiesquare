@@ -74,6 +74,9 @@ public class Application extends Controller {
     		contaminatedDisplay = "You're not still contaminated but beware when you check-in somewhere from now...";
     	}
     	
+    	// For testing
+    	Mails.testMail(player);
+    	
     	renderArgs.put("firstName", player.firstName);
     	
     	renderArgs.put("contamination", contaminatedDisplay);
@@ -107,6 +110,9 @@ public class Application extends Controller {
     	//update user last venue
     	player.lastVenue = venue;
     	player.save();
+    	
+    	// For testing
+    	Mails.testMail(player);
     	
     	// contaminate
 		if (venue.contaminated) {

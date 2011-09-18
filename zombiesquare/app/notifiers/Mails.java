@@ -10,7 +10,7 @@ import models.Venue;
 
 public class Mails extends Mailer {
 
-	public static String SENDER = "Robot <robot@thecompany.com>";
+	public static String SENDER = "Square of the Dead <steren.giannini@gmail.com>";
 
 	public static void playerContaminatedByVenue(Player player, Venue venue) {
 		setFrom(SENDER);
@@ -24,5 +24,12 @@ public class Mails extends Mailer {
 		setSubject(Messages.get("playerContaminatedVenue.subject"));
 		addRecipient(player.email);
 		send(player, venue);
+	}
+	
+	public static void testMail(Player player) {
+		setFrom(SENDER);
+		setSubject(Messages.get("playerContaminatedVenue.subject"));
+		addRecipient(player.email);
+		send(player);
 	}
 }

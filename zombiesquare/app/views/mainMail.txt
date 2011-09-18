@@ -1,4 +1,6 @@
-Square of the Dead 
-
+Square of the Dead
+==================
 #{doLayout /}
 
+==================
+more at http://squareofthedead.appspot.com

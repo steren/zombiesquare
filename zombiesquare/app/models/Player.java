@@ -34,6 +34,9 @@ public class Player extends Model {
     /** number of weapons the player has */
     public Long weapons;
     
+    /** score of this user */
+    public Long score;
+    
     @Filter("player")
     public Query<CheckIn> checkins;
     

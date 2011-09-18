@@ -1,3 +1,18 @@
-Yeah! you killed all zombies at ${venue.name}.
+#{extends 'mainMail.txt' /}
 
-You now have ${player.weapons} weapons left.
+#{if zombiesDecontaminated > 0}
+Yeah! You killed ${zombiesDecontaminated} zombies and decontaminated ${venue.name}. 
+#{/if}
+#{else}
+Nice job! You decontaminated ${venue.name}.
+#{/else}
+
+#{if player.weapons > 0}
+You now have ${player.weapons}/3 weapons left.
+#{/if}
+#{else}
+Be careful, you have no weapon left. Try to find one in a safe place.
+#{/else}
+You win ${addScore} points.
+
+Your score: ${player.score}

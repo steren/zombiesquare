@@ -7,6 +7,7 @@ import java.util.*;
 
 import models.Player;
 import models.Venue;
+import models.Weapon;
 
 public class Mails extends Mailer {
 
@@ -28,7 +29,10 @@ public class Mails extends Mailer {
 	
 	public static void playerGetWeapon(Player player, Venue venue) {
 		setFrom(SENDER);
-		setSubject("You found a weapon!");
+		Weapon[] weapons = Weapon.values();
+		int indexWeapon = (int) (weapons.length*Math.random());
+		Weapon weapon = weapons[indexWeapon];
+		setSubject("You found a "+weapon.getName()+" in "+venue.name);
 		addRecipient(player.email);
 		send(player, venue);
 	}

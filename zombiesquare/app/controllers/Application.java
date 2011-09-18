@@ -150,14 +150,15 @@ public class Application extends Controller {
 						if(zombiesDecontaminated>0)
 							message = "Yeah! You killed "+zombiesDecontaminated+" zombies and decontaminated "+venue.name+".";
 						else
-							message = "Nice job! You decontaminated "+venue.name+".";
+							message = "<br>Nice job! You decontaminated "+venue.name+".";
 						if(player.weapons>0)
 							message+="<br>You now have "+player.weapons+"/3 weapons left.";
 						else
-							message += "Be careful, you have no weapon left. Try to find one in a safe place.";
+							message += "<br>Be careful, you have no weapon left. Try to find one in a safe place.";
 						
 						message += "You win "+addScore+" points." +
 								"<br>Your score: "+player.score;
+						message += "<img src=\"http://squareofthedead.appspot.com/public/images/image_youkillzombies.png\"/>";
 						FreeMails.sendMail(player.email,"Nice fight, you decontaminated "+ venue.name +"!", message);
 					}
 				}
@@ -167,14 +168,16 @@ public class Application extends Controller {
 					
 					if(!player.unsubscribeAll) {
 //						Mails.playerContaminatedByVenue(player, venue);
-						String message = "Damned!"+
-						venue.name+" was contaminated and you didn't have any weapon to resist."+
+						String message = "Damned!<br>"+
+						venue.name+" was contaminated and you did not have any weapon to resist."+
 
-						"You are now a Zombie. Your goal is to spread the virus by checking-in everywhere."
+						"<br>You are now a Zombie. Your goal is to spread the virus by checking-in everywhere."
 
-						+"You may become human again if a survivor fights at the place you last checked-in."
+						+"<br>You may become human again if a survivor fights at the place you last checked-in."
 
-						+"Your score: "+player.score;
+						+"<br>Your score: "+player.score;
+						message += "<br><img src=\"http://squareofthedead.appspot.com/public/images/image_youareazombie.png\"/>";
+						
 						FreeMails.sendMail(player.email, "You have been contaminated", message);
 					}
 				}
@@ -191,9 +194,10 @@ public class Application extends Controller {
 //					Mails.playerContaminatedVenue(player, venue);
 					String message = "You just contaminated "+venue.name+"."+
 
-						"You helped to spread the virus, you gained 1 point."
+						"<br>You helped to spread the virus, you gained 1 point."
 
-						+"Your score: "+player.score;
+						+"<br>Your score: "+player.score;
+					message += "<br><img src=\"http://squareofthedead.appspot.com/public/images/image_youinfestedthisplace.png\"/>";
 					FreeMails.sendMail(player.email, "You contaminated "+ venue.name + "!", message);
 				}
     			
@@ -215,10 +219,11 @@ public class Application extends Controller {
 						
 						String message = "You found a weapon at" +  venue.name+"!"+
 
-						"You now have "+player.weapons+" weapons with you."+
-						"Go and fight zombies in contaminated places!"
+						"<br>You now have "+player.weapons+" weapons with you."+
+						"<br>Go and fight zombies in contaminated places!"
 
-						+"Your score: "+player.score;
+						+"<br>Your score: "+player.score;
+						message += "<br><img src=\"http://squareofthedead.appspot.com/public/images/image_yougetaweapon.png\"/>";
 						FreeMails.sendMail(player.email, "You found a "+weapon.getName()+" in "+venue.name, message);
 					}
     			}

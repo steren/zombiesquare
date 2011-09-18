@@ -76,6 +76,7 @@ public class HTTPRequestPoster {
 		HttpURLConnection urlc = null;
 		try {
 			URL url = new URL(endpoint);
+			
 			urlc = (HttpURLConnection) url.openConnection();
 			
 			urlc.setDoOutput(true);

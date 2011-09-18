@@ -3,6 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Date;
 
+import notifiers.Mails;
+
 import json.model.foursquareAPI.FourSquareCheckIn;
 import json.model.foursquareAPI.FourSquareCheckInApiResult;
 import json.model.foursquareAPI.FourSquareUser;
@@ -106,7 +108,7 @@ public class Application extends Controller {
 				player.contaminated = true;
 				player.save();
 			}
-    		// send mail
+			Mails.playerContaminatedByVenue(player, venue);
     	} else {
     		if(player.contaminated) {
     			venue.contaminated = true;
@@ -114,7 +116,7 @@ public class Application extends Controller {
     			
     			new VenueState(venue, new Date(), true).insert();
     		}
-    		// send mail
+    		Mails.playerContaminatedVenue(player, venue);
     	} 
     	
     	return;

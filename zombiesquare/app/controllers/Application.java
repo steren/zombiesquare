@@ -6,7 +6,6 @@ import java.util.Date;
 import notifiers.Mails;
 
 import json.model.foursquareAPI.FourSquareCheckIn;
-import json.model.foursquareAPI.FourSquareCheckInApiResult;
 import json.model.foursquareAPI.FourSquareUser;
 import json.model.foursquareAPI.FourSquareVenue;
 import models.CheckIn;

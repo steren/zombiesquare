@@ -10,14 +10,14 @@ import models.CheckIn;
 import models.Player;
 import models.Venue;
 import models.VenueState;
+import models.Weapon;
+import notifiers.FreeMails;
 import notifiers.Mails;
 import parameters.GameParameters;
 import parameters.Parameters;
 import play.mvc.Controller;
 import requests.foursquare.AuthenticationRequest;
 import requests.foursquare.CheckInRequest;
-import requests.foursquare.HTTPRequestPoster;
-import requests.foursquare.PostField;
 
 import com.google.gson.Gson;
 
@@ -27,16 +27,7 @@ public class Application extends Controller {
     	renderArgs.put("fourSquareConnectUrl", Parameters.fourSquareConnectUrl());
         render();
     }
-    
-//    public static void testMailFree() throws Exception {
-//    	ArrayList<PostField> dataFields = new ArrayList<PostField>();
-//    	dataFields.add(new PostField("code", "hackathon"));
-//    	dataFields.add(new PostField("email", "duchere@gmail.com"));
-//    	dataFields.add(new PostField("subject", "hackathon"));
-//    	dataFields.add(new PostField("message", "hackathon"));
-//    	HTTPRequestPoster.postData(dataFields, "http://ducherejean.free.fr/sendMail.php");
-//    	render();
-//    }
+
     
     public static void authenticate(String code) {
     	
@@ -101,9 +92,9 @@ public class Application extends Controller {
     
     /**
      * Called by foursquare when a player checks in somewhere
+     * @throws Exception 
      */
     public static void playerCheckIn( String checkin ) {
-    	//String checkin = body;
     	FourSquareCheckIn result = new Gson().fromJson(checkin, FourSquareCheckIn.class);
     	
     	Player player = Player.findById(result.getUser().getId());
@@ -150,7 +141,26 @@ public class Application extends Controller {
 					venue.save();
 					
 					if(!player.unsubscribeAll) {
-						Mails.playerUseWeapon(player, venue, addScore, zombiesDecontaminated);
+//						Mails.playerUseWeapon(player, venue, addScore, zombiesDecontaminated);
+						String subject = "Nice fight, you decontaminated "+ venue.name +"!";
+						String message;
+						if(zombiesDecontaminated>0)
+							message = "Yeah! You killed "+zombiesDecontaminated+" zombies and decontaminated "+venue.name+".";
+						else
+							message = "Nice job! You decontaminated "+venue.name+".";
+						if(player.weapons>0)
+							message+="<br>You now have "+player.weapons+"/3 weapons left.";
+						else
+							message += "Be careful, you have no weapon left. Try to find one in a safe place.";
+						
+						message += "You win "+addScore+" points." +
+								"<br>Your score: "+player.score;
+						try {
+							FreeMails.sendMail(player.email,"Nice fight, you decontaminated "+ venue.name +"!", message);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 				else {
@@ -158,7 +168,21 @@ public class Application extends Controller {
 					player.save();
 					
 					if(!player.unsubscribeAll) {
-						Mails.playerContaminatedByVenue(player, venue);
+//						Mails.playerContaminatedByVenue(player, venue);
+						String message = "Damned!"+
+						venue.name+" was contaminated and you didn't have any weapon to resist."+
+
+						"You are now a Zombie. Your goal is to spread the virus by checking-in everywhere."
+
+						+"You may become human again if a survivor fights at the place you last checked-in."
+
+						+"Your score: "+player.score;
+						try {
+							FreeMails.sendMail(player.email, "You have been contaminated", message);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			}
@@ -171,7 +195,18 @@ public class Application extends Controller {
     			player.save();
 
 				if(!player.unsubscribeAll) {
-					Mails.playerContaminatedVenue(player, venue);
+//					Mails.playerContaminatedVenue(player, venue);
+					String message = "You just contaminated "+venue.name+"."+
+
+						"You helped to spread the virus, you gained 1 point."
+
+						+"Your score: "+player.score;
+					try {
+						FreeMails.sendMail(player.email, "You contaminated "+ venue.name + "!", message);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
     			
     			new VenueState(venue, new Date(), true).insert();
@@ -184,7 +219,24 @@ public class Application extends Controller {
     				player.save();
     				
 					if(!player.unsubscribeAll) {
-						Mails.playerGetWeapon(player, venue);
+//						Mails.playerGetWeapon(player, venue);
+						
+						Weapon[] weapons = Weapon.values();
+						int indexWeapon = (int) (weapons.length*Math.random());
+						Weapon weapon = weapons[indexWeapon];
+						
+						String message = "You found a weapon at" +  venue.name+"!"+
+
+						"You now have "+player.weapons+" weapons with you."+
+						"Go and fight zombies in contaminated places!"
+
+						+"Your score: "+player.score;
+						try {
+							FreeMails.sendMail(player.email, "You found a "+weapon.getName()+" in "+venue.name, message);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
     			}
     		}

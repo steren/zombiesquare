@@ -8,7 +8,7 @@ public class Parameters {
 	
 	public static String application_base_url = "http://squareofthedead.appspot.com/";
 
-	public static int apiConnectionTimeOut = 20000;
+	public static int apiConnectionTimeOut = 30000;
 	
 	public static String accessTokenRequestUrl() {
 		return "https://foursquare.com/oauth2/access_token";

@@ -9,12 +9,13 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 
-import parameters.Parameters;
 import play.Logger;
+
+import com.sun.mail.iap.ProtocolException;
 
 public class HTTPRequestPoster {
 	/**
@@ -66,18 +67,19 @@ public class HTTPRequestPoster {
 	 * 
 	 * @throws Exception
 	 */
-	public static void postData(Reader data, URL endpoint, Writer output)
+	public static void postData(ArrayList<PostField> dataFields, String endpoint)
 			throws Exception {
+		String data = "";
+		for(PostField dataField: dataFields) {
+			data+=(data.isEmpty()?"":"&"+URLEncoder.encode(dataField.getDataField(), "UTF-8") + "=" + URLEncoder.encode(dataField.getDataValue(), "UTF-8"));
+		}
+		System.out.println("IIIIIIIIIIIIIII"+data);
 		HttpURLConnection urlc = null;
 		try {
-			urlc = (HttpURLConnection) endpoint.openConnection();
-			try {
-				urlc.setRequestMethod("POST");
-			} catch (ProtocolException e) {
-				throw new Exception(
-						"Shouldn't happen: HttpURLConnection doesn't support POST??",
-						e);
-			}
+			URL url = new URL(endpoint);
+			urlc = (HttpURLConnection) url.openConnection();
+			urlc.setRequestMethod("POST");
+			
 			urlc.setDoOutput(true);
 			urlc.setDoInput(true);
 			urlc.setUseCaches(false);
@@ -87,7 +89,8 @@ public class HTTPRequestPoster {
 			OutputStream out = urlc.getOutputStream();
 			try {
 				Writer writer = new OutputStreamWriter(out, "UTF-8");
-				pipe(data, writer);
+				writer.write(data);
+				writer.flush();
 				writer.close();
 			} catch (IOException e) {
 				throw new Exception("IOException while posting data", e);
@@ -98,7 +101,7 @@ public class HTTPRequestPoster {
 			InputStream in = urlc.getInputStream();
 			try {
 				Reader reader = new InputStreamReader(in);
-				pipe(reader, output);
+//				pipe(reader, output);
 				reader.close();
 			} catch (IOException e) {
 				throw new Exception("IOException while reading response", e);

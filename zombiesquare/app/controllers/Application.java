@@ -28,15 +28,15 @@ public class Application extends Controller {
         render();
     }
     
-    public static void testMailFree() throws Exception {
-    	ArrayList<PostField> dataFields = new ArrayList<PostField>();
-    	dataFields.add(new PostField("code", "hackathon"));
-    	dataFields.add(new PostField("email", "duchere@gmail.com"));
-    	dataFields.add(new PostField("subject", "hackathon"));
-    	dataFields.add(new PostField("message", "hackathon"));
-    	HTTPRequestPoster.postData(dataFields, "http://ducherejean.free.fr/sendMail.php");
-    	render();
-    }
+//    public static void testMailFree() throws Exception {
+//    	ArrayList<PostField> dataFields = new ArrayList<PostField>();
+//    	dataFields.add(new PostField("code", "hackathon"));
+//    	dataFields.add(new PostField("email", "duchere@gmail.com"));
+//    	dataFields.add(new PostField("subject", "hackathon"));
+//    	dataFields.add(new PostField("message", "hackathon"));
+//    	HTTPRequestPoster.postData(dataFields, "http://ducherejean.free.fr/sendMail.php");
+//    	render();
+//    }
     
     public static void authenticate(String code) {
     	

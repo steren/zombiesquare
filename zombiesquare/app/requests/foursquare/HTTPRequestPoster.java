@@ -71,24 +71,18 @@ public class HTTPRequestPoster {
 			throws Exception {
 		String data = "";
 		for(PostField dataField: dataFields) {
-			data+=(data.isEmpty()?"":"&"+URLEncoder.encode(dataField.getDataField(), "UTF-8") + "=" + URLEncoder.encode(dataField.getDataValue(), "UTF-8"));
+			data=data.concat(((data.isEmpty()?"":"&")+URLEncoder.encode(dataField.getDataField(), "UTF-8") + "=" + URLEncoder.encode(dataField.getDataValue(), "UTF-8")));
 		}
-		System.out.println("IIIIIIIIIIIIIII"+data);
 		HttpURLConnection urlc = null;
 		try {
 			URL url = new URL(endpoint);
 			urlc = (HttpURLConnection) url.openConnection();
-			urlc.setRequestMethod("POST");
 			
 			urlc.setDoOutput(true);
-			urlc.setDoInput(true);
-			urlc.setUseCaches(false);
-			urlc.setAllowUserInteraction(false);
-			urlc.setRequestProperty("Content-type", "text/xml; charset="
-					+ "UTF-8");
+			
 			OutputStream out = urlc.getOutputStream();
 			try {
-				Writer writer = new OutputStreamWriter(out, "UTF-8");
+				Writer writer = new OutputStreamWriter(out);
 				writer.write(data);
 				writer.flush();
 				writer.close();
@@ -98,17 +92,12 @@ public class HTTPRequestPoster {
 				if (out != null)
 					out.close();
 			}
-			InputStream in = urlc.getInputStream();
-			try {
-				Reader reader = new InputStreamReader(in);
-//				pipe(reader, output);
-				reader.close();
-			} catch (IOException e) {
-				throw new Exception("IOException while reading response", e);
-			} finally {
-				if (in != null)
-					in.close();
-			}
+			// Get the response
+		    BufferedReader rd = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
+		    String line;
+		    while ((line = rd.readLine()) != null) {
+		        Logger.debug(line);
+		    }
 		} catch (IOException e) {
 			throw new Exception("Connection error (is server running at "
 					+ endpoint + " ?): " + e);

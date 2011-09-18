@@ -5,8 +5,6 @@
 # Unsecured admin
 *    /admin    module:crudsiena
 
-GET		/testMail								Application.testMail
-
 # Home page
 GET     /                                       Application.index
 

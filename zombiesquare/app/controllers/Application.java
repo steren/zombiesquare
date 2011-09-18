@@ -3,11 +3,6 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.HtmlEmail;
-
-import notifiers.Mails;
-
 import json.model.foursquareAPI.FourSquareCheckIn;
 import json.model.foursquareAPI.FourSquareUser;
 import json.model.foursquareAPI.FourSquareVenue;
@@ -15,13 +10,14 @@ import models.CheckIn;
 import models.Player;
 import models.Venue;
 import models.VenueState;
+import notifiers.Mails;
 import parameters.GameParameters;
 import parameters.Parameters;
-import play.Logger;
-import play.libs.Mail;
 import play.mvc.Controller;
 import requests.foursquare.AuthenticationRequest;
 import requests.foursquare.CheckInRequest;
+import requests.foursquare.HTTPRequestPoster;
+import requests.foursquare.PostField;
 
 import com.google.gson.Gson;
 
@@ -30,6 +26,16 @@ public class Application extends Controller {
     public static void index() {
     	renderArgs.put("fourSquareConnectUrl", Parameters.fourSquareConnectUrl());
         render();
+    }
+    
+    public static void testMailFree() throws Exception {
+    	ArrayList<PostField> dataFields = new ArrayList<PostField>();
+    	dataFields.add(new PostField("code", "hackathon"));
+    	dataFields.add(new PostField("email", "duchere@gmail.com"));
+    	dataFields.add(new PostField("subject", "hackathon"));
+    	dataFields.add(new PostField("message", "hackathon"));
+    	HTTPRequestPoster.postData(dataFields, "http://ducherejean.free.fr/sendMail.php");
+    	render();
     }
     
     public static void authenticate(String code) {

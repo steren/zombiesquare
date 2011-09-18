@@ -3,7 +3,7 @@
 # ~~~~
 
 # Unsecured admin
-*    /admin    module:crudsiena
+*    /administrationarea    module:crudsiena
 
 GET		/testMail								Application.testMail
 

@@ -79,10 +79,10 @@ public class Application extends Controller {
     	
     	String contaminatedDisplay;
     	if(venueContamination!=null) {
-    		contaminatedDisplay = "You are a zombie because you have been contaminated when you went to " + venueContamination.getName();
+    		contaminatedDisplay = "Zombie from " + venueContamination.getName();
     	}
     	else {
-    		contaminatedDisplay = "You're not still contaminated but beware when you check-in somewhere from now...";
+    		contaminatedDisplay = "Survivor";
     	}
     	
     	renderArgs.put("firstName", player.firstName);

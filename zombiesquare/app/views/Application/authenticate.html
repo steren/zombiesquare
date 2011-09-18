@@ -2,13 +2,18 @@
 #{set title:'Welcome on Square Of The Dead' /}
 #{set moreStyles:'/public/stylesheets/authenticate.css' /}
 
-<img src="/public/images/rules.png" id="bg"/>
-
 <div id="bandeau"></div>
 
 <div class="container" id="containerTitle">
+	<div id="infos">
+	Player = ${firstName}
+	<br>
+	Current Mode = ${contamination}
+	<br>
+	Score = 155 points
+	</div>
 	<img src="/public/images/title_home.png" id="title" alt="Square of the Dead"/>
 </div>
-
-<!-- <h1>Hello ${firstName}, Welcome on Square of the dead</h1> -->
-<!-- <h2>${contamination}${venueId}</h2> -->
+<div class="container" id="containerRules">
+	<img src="/public/images/rules.png" id="rules"/>
+</div>

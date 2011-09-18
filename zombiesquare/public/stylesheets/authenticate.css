@@ -4,14 +4,10 @@ html, body {
   position: relative;
 }
 body {
-	background: #D9DFD3;
+	background: black;
 }
-img#bg {
-  position:fixed;
-  top:120px;
-  left:0;
+img#rules {
   width:100%;
-  z-index:1;
 }
 .container {
   text-align: right;
@@ -23,6 +19,10 @@ img#bg {
   margin-left: auto;
 }
 
+#containerTitle {
+	height: 120px;
+}
+
 #bandeau  {
 	z-index:2;
 	position:fixed;
@@ -30,12 +30,21 @@ img#bg {
 	left:0;
 	width: 100%;
 	height: 120px;
-	background: black;
-	opacity: 0.6;
-	filter:alpha(opacity=60);	
+	background: black;	
 }
 
 #title {
+	display: block;
+	float: right;
 	margin-top: 10px;
 	margin-right: 10px;	
+}
+
+#infos {
+	text-align: left;
+	margin-top: 20px;
+	margin-left: 20px;
+	line-height: 30px;
+	float: left;	
+	color: white;
 }

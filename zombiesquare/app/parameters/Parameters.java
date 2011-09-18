@@ -7,6 +7,8 @@ public class Parameters {
 	public static String FOURSQUARE_CLIENT_SECRET = "5ZOBABT5K113ZM4FKYT1HLVXG2VNAYVDT2KH0YONAHDND1PN";
 	
 	public static String application_base_url = "http://squareofthedead.appspot.com/";
+
+	public static int apiConnectionTimeOut = 2000;
 	
 	public static String accessTokenRequestUrl() {
 		return "https://foursquare.com/oauth2/access_token";

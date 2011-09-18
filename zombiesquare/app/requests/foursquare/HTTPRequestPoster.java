@@ -13,6 +13,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import parameters.Parameters;
 import play.Logger;
 
 public class HTTPRequestPoster {
@@ -41,6 +42,7 @@ public class HTTPRequestPoster {
 				}
 				URL url = new URL(urlStr);
 				URLConnection conn = url.openConnection();
+				conn.setConnectTimeout(Parameters.apiConnectionTimeOut);
 				// Get the response
 				BufferedReader rd = new BufferedReader(new InputStreamReader(
 						conn.getInputStream()));

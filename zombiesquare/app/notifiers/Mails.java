@@ -21,15 +21,30 @@ public class Mails extends Mailer {
 
 	public static void playerContaminatedVenue(Player player, Venue venue) {
 		setFrom(SENDER);
-		setSubject(Messages.get("playerContaminatedVenue.subject"));
+		setSubject("You contaminated "+ venue.name + "!");
 		addRecipient(player.email);
 		send(player, venue);
 	}
 	
-	public static void testMail(Player player) {
+	public static void playerGetWeapon(Player player, Venue venue) {
 		setFrom(SENDER);
-		setSubject(Messages.get("playerContaminatedVenue.subject"));
+		setSubject("You found a weapon!");
 		addRecipient(player.email);
-		send(player);
+		send(player, venue);
+	}
+	
+	public static void playerUseWeapon(Player player, Venue venue) {
+		setFrom(SENDER);
+		setSubject("Nice fight, you decontaminated "+ venue.name +"!");
+		addRecipient(player.email);
+		send(player, venue);
+	}
+	
+	public static void testMail() {
+		setFrom(SENDER);
+		setSubject("Test Mail");
+		addRecipient("steren.giannini@gmail.com");
+		String testString = "Steren Giannini";
+		send(testString);
 	}
 }

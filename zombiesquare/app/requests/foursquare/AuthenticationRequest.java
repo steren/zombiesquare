@@ -6,6 +6,7 @@ import json.model.foursquareAPI.FourSquareUserApiResult;
 import json.model.foursquareAPI.FourSquareUserResponse;
 import parameters.FourSquareApiUrl;
 import parameters.Parameters;
+import play.Logger;
 
 import com.google.gson.Gson;
 
@@ -24,8 +25,12 @@ public class AuthenticationRequest {
 	}
 	
 	public static String getUserTokenByCode(String code) {
+		Logger.info(Parameters.accessTokenRequestUrl());
+		Logger.info(Parameters.accessTokenRequestUrlParameters(code));
+		String result = HTTPRequestPoster.sendGetRequest(Parameters.accessTokenRequestUrl(), Parameters.accessTokenRequestUrlParameters(code));
+		Logger.error(result);
 		FourSquareAccessToken accessToken = new Gson().fromJson(
-    			HTTPRequestPoster.sendGetRequest(Parameters.accessTokenRequestUrl(), Parameters.accessTokenRequestUrlParameters(code))
+    			result
     			,FourSquareAccessToken.class);
 		if(accessToken!=null)
 			return accessToken.getToken();

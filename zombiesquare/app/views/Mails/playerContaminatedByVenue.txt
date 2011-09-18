@@ -1,1 +1,7 @@
-you have been contaminated by ${venue.name}
+Damned!
+${venue.name} was contaminated and you didn't have any weapon to resist.
+
+You are now a Zombie.
+Your goal is to spread the virus by checking-in everywhere.
+
+You may become human again if a survivor fights at the place you last checked-in.

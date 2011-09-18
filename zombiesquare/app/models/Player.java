@@ -37,6 +37,8 @@ public class Player extends Model {
     @Filter("player")
     public Query<CheckIn> checkins;
     
+    public Venue lastVenue;
+    
     public Player(String id, String email) {
     	//TODO virer ce constructeur (juste pour tests)
     	this.id = id;
@@ -50,6 +52,7 @@ public class Player extends Model {
     	this.lastName = fourSquareUser.getLastName();
     	this.accessToken = accessToken;
     	this.contaminated = false;
+    	this.weapons = new Long(0);
     }
     
     static Query<Player> all() {
@@ -67,6 +70,10 @@ public class Player extends Model {
     
     public String toString() {
         return email;
+    }
+    
+    public static Collection<Player> zombiesInside(Venue venue) {
+    	return Player.all().filter("lastVenue", venue).filter("contaminated", true).fetch();
     }
 }
 

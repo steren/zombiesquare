@@ -8,10 +8,12 @@ import notifiers.Mails;
 import json.model.foursquareAPI.FourSquareCheckIn;
 import json.model.foursquareAPI.FourSquareCheckInApiResult;
 import json.model.foursquareAPI.FourSquareUser;
+import json.model.foursquareAPI.FourSquareVenue;
 import models.CheckIn;
 import models.Player;
 import models.Venue;
 import models.VenueState;
+import parameters.GameParameters;
 import parameters.Parameters;
 import play.mvc.Controller;
 import requests.foursquare.AuthenticationRequest;
@@ -50,27 +52,28 @@ public class Application extends Controller {
     	}
     	
     	//Check if already contaminated ?
-    	boolean contaminated = false;
+    	FourSquareVenue venueContamination = null;
     	//get last check ins
     	ArrayList<FourSquareCheckIn> lastCheckIns = CheckInRequest.getLastCheckIns(accessToken);
     	if(lastCheckIns!=null && !lastCheckIns.isEmpty()) {
     		//for each check in, check venue contamination
     		for(FourSquareCheckIn checkin: lastCheckIns) {
     			String venueId = checkin.getVenue().getId();
-    			
-    			renderArgs.put("venueId", venueId);
-    			
     			Date date = new Date(checkin.getCreatedAt()*1000);
     			if(VenueState.venueIsContaminated(venueId, date)) {
-    				contaminated = true;
+    				venueContamination = checkin.getVenue();
     				break;
     			}
     		}
     	}
     	
-    	
-    	
-    	String contaminatedDisplay = contaminated?"Vous êtes contaminé ! :(":"Vous n'êtes pas contaminé ! :)";
+    	String contaminatedDisplay;
+    	if(venueContamination!=null) {
+    		contaminatedDisplay = "You are a zombie because you have been contaminated when you went to " + venueContamination.getName();
+    	}
+    	else {
+    		contaminatedDisplay = "You're not still contaminated but beware when you check-in somewhere from now...";
+    	}
     	
     	renderArgs.put("firstName", player.firstName);
     	
@@ -102,22 +105,50 @@ public class Application extends Controller {
     	// store the checkin
     	new CheckIn(result.getCheckin().getId(), player, venue, new Date(result.getCheckin().getCreatedAt() * 1000)).insert();
     	
+    	//update user last venue
+    	player.lastVenue = venue;
+    	player.save();
+    	
     	// contaminate
 		if (venue.contaminated) {
 			if(!player.contaminated) {
-				player.contaminated = true;
-				player.save();
+				if(player.weapons>=GameParameters.costKeepLive) {
+					player.weapons = player.weapons - GameParameters.costKeepLive;
+					player.save();
+					venue.contaminated = false;
+					venue.save();
+					for(Player zombie: Player.zombiesInside(venue)) {
+						zombie.contaminated = false;
+						zombie.save();
+					}
+				}
+				else {
+					player.contaminated = true;
+					player.save();
+					
+					// mail
+					Mails.playerContaminatedByVenue(player, venue);
+				}
 			}
-			Mails.playerContaminatedByVenue(player, venue);
     	} else {
     		if(player.contaminated) {
     			venue.contaminated = true;
     			venue.save();
     			
+    			// mail
+    			Mails.playerContaminatedVenue(player, venue);
+    			
     			new VenueState(venue, new Date(), true).insert();
     		}
-    		Mails.playerContaminatedVenue(player, venue);
-    	} 
+    		else {
+    			//if not limited by max count weapons && random is nice with you, weapons++
+    			if(player.weapons<GameParameters.maxCountWeapons 
+    					&& Math.random()>GameParameters.getWeaponProbability) {
+    				player.weapons++;
+    				player.save();
+    			}
+    		}
+    	}
     	
     	return;
     }

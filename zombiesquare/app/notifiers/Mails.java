@@ -33,11 +33,11 @@ public class Mails extends Mailer {
 		send(player, venue);
 	}
 	
-	public static void playerUseWeapon(Player player, Venue venue) {
+	public static void playerUseWeapon(Player player, Venue venue, int addScore, int zombiesDecontaminated) {
 		setFrom(SENDER);
 		setSubject("Nice fight, you decontaminated "+ venue.name +"!");
 		addRecipient(player.email);
-		send(player, venue);
+		send(player, venue, addScore, zombiesDecontaminated);
 	}
 	
 	public static void testMail() {

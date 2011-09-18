@@ -89,8 +89,8 @@ public class Application extends Controller {
     /**
      * Called by foursquare when a player checks in somewhere
      */
-    public static void playerCheckIn( String checkin /*body*/ ) {
-    	//String checkin = body;
+    public static void playerCheckIn( String /*checkin*/ body ) {
+    	String checkin = body;
     	FourSquareCheckIn result = new Gson().fromJson(checkin, FourSquareCheckIn.class);
     	
     	Player player = Player.findById(result.getUser().getId());
@@ -119,15 +119,24 @@ public class Application extends Controller {
 			if(!player.contaminated) {
 				if(player.weapons>=GameParameters.costKeepLive) {
 					player.weapons = player.weapons - GameParameters.costKeepLive;
-					player.save();
 					venue.contaminated = false;
-					venue.save();
+					
+					int addScore = GameParameters.SCORE_DECONTAMINATE_VENUE;
+					int zombiesDecontaminated = 0;
 					for(Player zombie: Player.zombiesInside(venue)) {
 						zombie.contaminated = false;
 						zombie.save();
+						zombiesDecontaminated++;
 					}
 					
-    				Mails.playerUseWeapon(player, venue);
+					addScore += GameParameters.SCORE_DECONTAMINATE_ZOMBIE * zombiesDecontaminated;
+					
+					player.score += addScore;
+					
+					player.save();
+					venue.save();
+					
+    				Mails.playerUseWeapon(player, venue, addScore, zombiesDecontaminated);
 				}
 				else {
 					player.contaminated = true;
@@ -142,6 +151,9 @@ public class Application extends Controller {
     			venue.contaminated = true;
     			venue.save();
     			
+    			player.score += GameParameters.SCORE_CONTAMINATE_VENUE;
+    			player.save();
+
     			// mail
     			Mails.playerContaminatedVenue(player, venue);
     			

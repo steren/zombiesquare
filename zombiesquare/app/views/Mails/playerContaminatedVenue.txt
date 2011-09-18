@@ -4,4 +4,4 @@ You just contaminated ${venue.name}.
 
 You helped to spread the virus, you gained 1 point.
 
-Your score is now XXX.
+Your score: ${player.score}

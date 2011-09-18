@@ -41,11 +41,9 @@ public class HTTPRequestPoster {
 					urlStr += "?" + requestParameters;
 				}
 				URL url = new URL(urlStr);
-				URLConnection conn = url.openConnection();
-				conn.setConnectTimeout(Parameters.apiConnectionTimeOut);
 				// Get the response
 				BufferedReader rd = new BufferedReader(new InputStreamReader(
-						conn.getInputStream()));
+						url.openStream()));
 				StringBuffer sb = new StringBuffer();
 				String line;
 				while ((line = rd.readLine()) != null) {

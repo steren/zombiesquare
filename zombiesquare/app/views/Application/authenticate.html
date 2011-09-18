@@ -6,11 +6,15 @@
 
 <div class="container" id="containerTitle">
 	<div id="infos">
-	Player = ${firstName}
+	Player: ${player.firstName}
 	<br>
-	Current Mode = ${contamination}
+	<span style="#{if player.contaminated}color:#c1272d;#{/if}#{else}color:#8cc63f;#{/else}">${contamination}</span>
 	<br>
-	Score = 155 points
+	#{if player.weapons > 0}
+	Weapons: ${player.weapons}
+	<br>
+	#{/if}
+	Score: ${player.score}
 	</div>
 	<img src="/public/images/title_home.png" id="title" alt="Square of the Dead"/>
 </div>

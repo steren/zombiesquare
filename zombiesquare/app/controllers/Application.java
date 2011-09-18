@@ -85,11 +85,9 @@ public class Application extends Controller {
     		contaminatedDisplay = "Survivor";
     	}
     	
-    	renderArgs.put("firstName", player.firstName);
-    	
     	renderArgs.put("contamination", contaminatedDisplay);
     	
-    	render();
+    	render(player);
     }
     
     /**

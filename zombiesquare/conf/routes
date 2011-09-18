@@ -8,6 +8,9 @@
 # Home page
 GET     /                                       Application.index
 
+# Foursquare push
+POST    /push                                   Application.playerCheckIn
+
 # Authenticate page
 GET     /authenticate							Application.authenticate
 

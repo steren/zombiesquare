@@ -85,25 +85,25 @@ public class Application extends Controller {
     /**
      * Called by foursquare when a player checks in somewhere
      */
-    public static void playerCheckIn( String body ) {
-    	FourSquareCheckInApiResult result = new Gson().fromJson(body, FourSquareCheckInApiResult.class);
+    public static void playerCheckIn( String checkin ) {
+    	FourSquareCheckIn result = new Gson().fromJson(checkin, FourSquareCheckIn.class);
     	
-    	Player player = Player.findById(result.getCheckin().getUser().getId());
+    	Player player = Player.findById(result.getUser().getId());
     	// should not happen because player signed up
     	if(player == null) {
     		error("not a registered player");
     	}
     	
     	// get the venue
-    	Venue venue = Venue.findById(result.getCheckin().getVenue().getId());
+    	Venue venue = Venue.findById(result.getVenue().getId());
     	// create a venue if doesn't exist
     	if(venue == null) {
-    		venue = new Venue(result.getCheckin().getVenue());
+    		venue = new Venue(result.getVenue());
     		venue.insert();
     	}
     	
     	// store the checkin
-    	new CheckIn(result.getCheckin().getId(), player, venue, new Date(result.getCheckin().getCreatedAt() * 1000)).insert();
+    	new CheckIn(result.getId(), player, venue, new Date(result.getCreatedAt() * 1000)).insert();
     	
     	//update user last venue
     	player.lastVenue = venue;

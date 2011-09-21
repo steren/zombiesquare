@@ -19,6 +19,13 @@ public class Mails extends Mailer {
 		addRecipient(player.email);
 		send(player, venue);
 	}
+	
+	public static void playerDeContaminated(Player player, Venue venue, Player decontaminator) {
+		setFrom(SENDER);
+		setSubject("You were de-contaminated by "+ decontaminator.firstName);
+		addRecipient(player.email);
+		send(player, venue, decontaminator);
+	}
 
 	public static void playerContaminatedVenue(Player player, Venue venue) {
 		setFrom(SENDER);

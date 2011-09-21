@@ -131,6 +131,8 @@ public class Application extends Controller {
 						zombie.contaminated = false;
 						zombie.save();
 						zombiesDecontaminated++;
+						
+						Mails.playerDeContaminated(zombie, venue, player);
 					}
 					
 					addScore += GameParameters.SCORE_DECONTAMINATE_ZOMBIE * zombiesDecontaminated;

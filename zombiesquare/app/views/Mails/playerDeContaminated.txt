@@ -1,0 +1,9 @@
+#{extends 'mainMail.txt' /}
+
+${venue.name} was de-contaminated by ${decontaminator.firstName}!
+
+You are now a Survivor. Your goal is to find weapons in safe places and kill zombies!
+
+Be careful, you may become a Zombie if you check-in in a contaminated place.
+
+Your score: ${player.score}

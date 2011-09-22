@@ -40,11 +40,30 @@ public class Application extends Controller {
     	//Find if user with this id
     	Player player = Player.findById(user.getId());
     
-    	//create or update the player
+    	// if this is the first time
     	if(player==null) {
+    		// create the player
     		player = new Player(user, accessToken);
     		player.insert();
+    		
+        	//Check if already contaminated ?
+        	//get last check ins
+        	ArrayList<FourSquareCheckIn> lastCheckIns = CheckInRequest.getLastCheckIns(accessToken);
+        	if(lastCheckIns!=null && !lastCheckIns.isEmpty()) {
+        		//for each check in, check venue contamination
+        		for(FourSquareCheckIn checkin: lastCheckIns) {
+        			String venueId = checkin.getVenue().getId();
+        			Date date = new Date(checkin.getCreatedAt()*1000);
+        			if(VenueState.venueIsContaminated(venueId, date)) {
+        				player.contaminated = true;
+        				break;
+        			}
+        			// TODO : add all the checkins and venues in our database
+        		}
+        	}
+    		player.save();
     	}
+    	// if not the first time
     	else {
     		player.unsubscribeAll = false;
     		if(player.accessToken!=accessToken) {
@@ -53,25 +72,11 @@ public class Application extends Controller {
     		player.save();
     	}
     	
-    	//Check if already contaminated ?
-    	FourSquareVenue venueContamination = null;
-    	//get last check ins
-    	ArrayList<FourSquareCheckIn> lastCheckIns = CheckInRequest.getLastCheckIns(accessToken);
-    	if(lastCheckIns!=null && !lastCheckIns.isEmpty()) {
-    		//for each check in, check venue contamination
-    		for(FourSquareCheckIn checkin: lastCheckIns) {
-    			String venueId = checkin.getVenue().getId();
-    			Date date = new Date(checkin.getCreatedAt()*1000);
-    			if(VenueState.venueIsContaminated(venueId, date)) {
-    				venueContamination = checkin.getVenue();
-    				break;
-    			}
-    		}
-    	}
+    	
     	
     	String contaminatedDisplay;
-    	if(venueContamination!=null) {
-    		contaminatedDisplay = "Zombie from " + venueContamination.getName();
+    	if(player.contaminated) {
+    		contaminatedDisplay = "Zombie"; // TODO : add "from Venue"
     	}
     	else {
     		contaminatedDisplay = "Survivor";

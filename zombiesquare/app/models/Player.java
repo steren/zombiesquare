@@ -82,5 +82,6 @@ public class Player extends Model {
     public static Collection<Player> zombiesInside(Venue venue) {
     	return Player.all().filter("lastVenue", venue).filter("contaminated", true).fetch();
     }
+    
 }
 

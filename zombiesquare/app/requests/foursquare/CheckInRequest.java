@@ -17,7 +17,7 @@ public class CheckInRequest {
 						FourSquareApiUrl.fourSquareApiUrl+FourSquareApiUrl.users+"/"+FourSquareApiUrl.self+"/"+FourSquareApiUrl.checkins
 						, FourSquareApiUrl.tokenParameter(accessToken)) 
 				, FourSquareCheckInsApiResult.class);
-			if(result!=null && result.getResponse()!=null)
+			if(result!=null && result.getResponse()!=null && result.getResponse().getCheckIns() != null)
 				return result.getResponse().getCheckIns().getItems();
 			else
 				return null;

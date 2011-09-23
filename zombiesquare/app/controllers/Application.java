@@ -225,7 +225,7 @@ public class Application extends Controller {
     		else {
     			//if not limited by max count weapons && random is nice with you, weapons++
     			if(player.weapons<GameParameters.maxCountWeapons 
-    					&& Math.random()>GameParameters.getWeaponProbability) {
+    					&& Math.random()<GameParameters.getWeaponProbability) {
     				player.weapons++;
     				player.save();
     				

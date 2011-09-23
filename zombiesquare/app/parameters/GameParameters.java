@@ -1,7 +1,8 @@
 package parameters;
 
 public class GameParameters {
-	public static double getWeaponProbability = 0.6;
+	/** probability between 0 and 1 to win a weapon */
+	public static double getWeaponProbability = 0.4;
 	public static int maxCountWeapons = 5;
 	public static int costKeepLive = 1;
 	public static int costSaveAll = 2;

@@ -2,12 +2,21 @@ package parameters;
 
 public class Parameters {
 	
+	// prod:
 	public static String FOURSQUARE_CLIENT_ID = "YIIDZ0MLQWJPHJSVD1L50BNNCPDUWCHIVOQXTNUGTYUK3BTK";
+	// test:
+	//public static String FOURSQUARE_CLIENT_ID = "KY2K3DK5KFYLSLMMYN0RJMVKWRI31OI1UZ5YJJUFF41RRAVP";
 	
+	// prod:
 	public static String FOURSQUARE_CLIENT_SECRET = "5ZOBABT5K113ZM4FKYT1HLVXG2VNAYVDT2KH0YONAHDND1PN";
+	// test:
+	//public static String FOURSQUARE_CLIENT_SECRET = "XNOI2ZJK1TIF4SWRXQMRTPHAEOPY53LWA2QUIVYDHHIRHNKC";
 	
+	// prod:
 	public static String application_base_url = "http://squareofthedead.appspot.com/";
-
+	// test:
+	//public static String application_base_url = "http://squareofthedeadtest.appspot.com/";
+	
 	public static int apiConnectionTimeOut = 30000;
 	
 	public static String accessTokenRequestUrl() {

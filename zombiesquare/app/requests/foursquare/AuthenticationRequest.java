@@ -28,7 +28,7 @@ public class AuthenticationRequest {
 		Logger.info(Parameters.accessTokenRequestUrl());
 		Logger.info(Parameters.accessTokenRequestUrlParameters(code));
 		String result = HTTPRequestPoster.sendGetRequest(Parameters.accessTokenRequestUrl(), Parameters.accessTokenRequestUrlParameters(code));
-		Logger.error(result);
+		Logger.info(result);
 		FourSquareAccessToken accessToken = new Gson().fromJson(
     			result
     			,FourSquareAccessToken.class);

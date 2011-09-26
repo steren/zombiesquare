@@ -5,7 +5,6 @@ import java.util.Date;
 
 import json.model.foursquareAPI.FourSquareCheckIn;
 import json.model.foursquareAPI.FourSquareUser;
-import json.model.foursquareAPI.FourSquareVenue;
 import models.CheckIn;
 import models.Player;
 import models.Venue;
@@ -15,6 +14,7 @@ import notifiers.FreeMails;
 import notifiers.Mails;
 import parameters.GameParameters;
 import parameters.Parameters;
+import play.Logger;
 import play.mvc.Controller;
 import requests.foursquare.AuthenticationRequest;
 import requests.foursquare.CheckInRequest;
@@ -100,12 +100,20 @@ public class Application extends Controller {
      * @throws Exception 
      */
     public static void playerCheckIn( String checkin ) {
+    	Logger.info("push checkin");
+    	Logger.info(checkin);
     	FourSquareCheckIn result = new Gson().fromJson(checkin, FourSquareCheckIn.class);
     	
     	Player player = Player.findById(result.getUser().getId());
     	// should not happen because player signed up
     	if(player == null) {
-    		error("not a registered player");
+    		Logger.error("not a registered player");
+    		Logger.error(result.getUser().getId());
+    	}
+    	
+    	if(result.getVenue() == null) {
+    		Logger.info("no venue");
+    		renderText("no venue");
     	}
     	
     	// get the venue
@@ -255,7 +263,7 @@ public class Application extends Controller {
     		}
     	}
     	
-    	return;
+		renderText("ok");
     }
     
     public static void testMail() {
